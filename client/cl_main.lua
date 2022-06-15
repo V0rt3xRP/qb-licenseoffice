@@ -43,14 +43,12 @@ Citizen.CreateThread(function()
         
         if inZone and not alreadyEnteredZone then
             alreadyEnteredZone = true
-            --exports['qb-core']:DrawText(text, 'left')
-			exports['textUi']:DrawTextUi('show', text)
+            exports['qb-core']:DrawText(text, 'left')
         end
 
         if not inZone and alreadyEnteredZone then
             alreadyEnteredZone = false
-            --exports['qb-core']:HideText()
-			exports['textUi']:HideTextUi('hide')
+            exports['qb-core']:HideText()
         end
         Citizen.Wait(wait)
     end
