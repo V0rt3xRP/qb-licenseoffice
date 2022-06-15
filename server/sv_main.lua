@@ -1,7 +1,7 @@
 QBCore = exports['qb-core']:GetCoreObject()
 
 
-RegisterNetEvent('qb-licenseoffice:server:requestId', function(item, cost)
+RegisterNetEvent('qb-licenses:server:requestId', function(item, cost)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if not Player.Functions.RemoveMoney("cash", cost) then return TriggerClientEvent('QBCore:Notify', src, ('You don\'t have enough money on you, you need %s cash'):format(cost), 'error') end
@@ -39,7 +39,7 @@ RegisterNetEvent('qb-licenseoffice:server:requestId', function(item, cost)
     TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'add')
 end)
 
-QBCore.Functions.CreateCallback('qb-licenseoffice:server:checkLicences', function(source,cb)
+QBCore.Functions.CreateCallback('qb-licenses:server:checkLicences', function(source,cb)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     local driver =  Player.PlayerData.metadata['licences']['driver']
@@ -47,4 +47,12 @@ QBCore.Functions.CreateCallback('qb-licenseoffice:server:checkLicences', functio
     local hunting =  Player.PlayerData.metadata['licences']['hunting']
     local fishing =  Player.PlayerData.metadata['licences']['fishing']
         cb(driver, weapon, hunting, fishing)
+end)
+
+RegisterNetEvent('qb-licenses:server:SetJobJobCenter', function(data)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if Player.Functions.SetJob(data.job, 0) then
+        TriggerClientEvent('QBCore:Notify', src, 'Changed your job to: '..data.job)
+    end
 end)
