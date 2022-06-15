@@ -43,19 +43,21 @@ Citizen.CreateThread(function()
         
         if inZone and not alreadyEnteredZone then
             alreadyEnteredZone = true
-            exports['qb-core']:DrawText(text, 'left')
+            --exports['qb-core']:DrawText(text, 'left')
+			exports['textUi']:DrawTextUi('show', text)
         end
 
         if not inZone and alreadyEnteredZone then
             alreadyEnteredZone = false
-            exports['qb-core']:HideText()
+            --exports['qb-core']:HideText()
+			exports['textUi']:HideTextUi('hide')
         end
         Citizen.Wait(wait)
     end
 end)
 
 function openLicencesMenu(source, args, raw)
-    QBCore.Functions.TriggerCallback('qb-licenseoffice:server:checkLicences', function(driver, weapon, hunting, fishing)
+    QBCore.Functions.TriggerCallback('qb-licenses:server:checkLicences', function(driver, weapon, hunting, fishing)
         exports['qb-menu']:openMenu({
             {
                 header = "City Hall License Office",
@@ -65,7 +67,7 @@ function openLicencesMenu(source, args, raw)
                 header = "ID Card",
                 txt = "Pay - $250",
                 params = {
-                    event = "qb-licenseoffice:client:requestId",
+                    event = "qb-licenses:client:requestId",
                     args = {
                         item = 'id_card',
                         cost = '250'
@@ -75,9 +77,9 @@ function openLicencesMenu(source, args, raw)
             {
                 header = "Driving License",
                 txt = "Pay - $250",
-                disabled = driver == false,
+                hidden = driver == false,
                 params = {
-                    event = "qb-licenseoffice:client:requestId",
+                    event = "qb-licenses:client:requestId",
                     args = {
                         item = 'driver_license',
                         cost = '250'
@@ -87,9 +89,9 @@ function openLicencesMenu(source, args, raw)
             {
                 header = "Weapons License",
                 txt = "Pay - $5000",
-                disabled = weapon == false,
+                hidden = weapon == false,
                 params = {
-                    event = "qb-licenseoffice:client:requestId",
+                    event = "qb-licenses:client:requestId",
                     args = {
                         item = 'weaponlicense',
                         cost = '5000'
@@ -99,9 +101,9 @@ function openLicencesMenu(source, args, raw)
             {
                 header = "Hunting License",
                 txt = "Pay - $5000",
-                disabled = hunting == false,
+                hidden = hunting == false,
                 params = {
-                    event = "qb-licenseoffice:client:requestId",
+                    event = "qb-licenses:client:requestId",
                     args = {
                         item = 'huntinglicense',
                         cost = '5000'
@@ -111,9 +113,9 @@ function openLicencesMenu(source, args, raw)
             {
                 header = "Fishing License",
                 txt = "Pay - $5000",
-                disabled = fishing == false,
+                hidden = fishing == false,
                 params = {
-                    event = "qb-licenseoffice:client:requestId",
+                    event = "qb-licenses:client:requestId",
                     args = {
                         item = 'fishinglicense',
                         cost = '5000'
@@ -124,6 +126,6 @@ function openLicencesMenu(source, args, raw)
     end)
 end
 
-RegisterNetEvent('qb-licenseoffice:client:requestId', function(data)
-    TriggerServerEvent('qb-licenseoffice:server:requestId', data.item, data.cost)
+RegisterNetEvent('qb-licenses:client:requestId', function(data)
+    TriggerServerEvent('qb-licenses:server:requestId', data.item, data.cost)
 end)
